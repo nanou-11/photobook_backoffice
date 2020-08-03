@@ -1,0 +1,20 @@
+### get all the users
+GET http://localhost:8000/users HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI0ODkzNTM5LTU5MzMtNGRmMS1hNzQwLTgzMWNmZDk4YjMwMyIsImVtYWlsIjoiYW5haXNAZGV2LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTU5NjIyMTExMiwiZXhwIjoxNTk2MzA3NTEyfQ.a-h8bhgRkNuLsRv9BUzzX9KVd9p2q3ZS5UhFul209ZU
+
+### Get one user by id
+GET http://localhost:8000/users/5e1f956b-d90a-494f-9bcf-0a13a3f83918 HTTP/1.1
+
+### Put one user by id
+PUT http://localhost:8000/users/5e1f956b-d90a-494f-9bcf-0a13a3f83918 HTTP/1.1
+Content-Type: application/json
+
+{
+    "lastName" : "toto4"
+}
+
+### Delete one user by id
+DELETE http://localhost:8000/users/1decc1c0-ca46-4489-b55f-79f517a75889 HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFkZWNjMWMwLWNhNDYtNDQ4OS1iNTVmLTc5ZjUxN2E3NTg4OSIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTYyMjEzOTEsImV4cCI6MTU5NjMwNzc5MX0.rPEQDp1Wh8mex_7hCEIFmtP-P4FR8i-6qsqMwpmUxD4
+### Get one user by id
+GET http://localhost:8000/users/fdcf927d-b726-4449-99a1-39f6893c528a/albums HTTP/1.1
