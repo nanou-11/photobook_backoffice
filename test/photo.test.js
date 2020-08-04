@@ -21,10 +21,12 @@ let adminRoleId;
 let userRoleId;
 let albumUserId;
 let albumAdminId;
+let photoUserId;
+let photoAdminId;
 
-let albumkeys = ["id", "label", "date", "UserId", "createdAt", "updatedAt"];
+let photokeys = ["id", "url", "AlbumId", "UserId", "createdAt", "updatedAt"];
 
-describe("ALBUMS", () => {
+describe("PHOTOS", () => {
   before(async () => {
     await sequelize.sync({ force: true });
 
@@ -91,19 +93,21 @@ describe("ALBUMS", () => {
       UserId: userId,
       AlbumId: albumUserId,
     });
+    photoUserId = photosUser.dataValues.id;
 
     const photosAdmin = await Photo.create({
       url: "bjcdkbvfdjs",
       UserId: adminId,
       AlbumId: albumAdminId,
     });
+    photoAdminId = photosAdmin.dataValues.id;
   });
   describe("GET ALL", () => {
     it("admin should success", async () => {
       try {
         const res = await chai
           .request(server)
-          .get("/albums")
+          .get("/photos")
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(200);
         res.body.should.be.a("array");
@@ -116,7 +120,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .get("/albums")
+          .get("/photos")
           .set("Authorization", `Bearer ${userToken}`);
         res.should.have.status(403);
         res.body.should.be.a("object");
@@ -130,11 +134,11 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .get(`/albums/${albumAdminId}`)
+          .get(`/photos/${photoAdminId}`)
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(200);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
@@ -143,11 +147,11 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .get(`/albums/${albumUserId}`)
+          .get(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(200);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
@@ -156,11 +160,11 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .get(`/albums/${albumUserId}`)
+          .get(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${userToken}`);
         res.should.have.status(200);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
@@ -169,7 +173,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .get(`/albums/${albumAdminId}`)
+          .get(`/photos/${photoAdminId}`)
           .set("Authorization", `Bearer ${userToken}`);
         res.should.have.status(400);
         res.body.should.be.a("object");
@@ -183,34 +187,34 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/albums")
+          .post("/photos")
           .send({
-            label: " helscslo",
-            date: "bcjkdsbckjdsbck",
+            url: " helscslo",
+            AlbumId: albumAdminId,
             UserId: adminId,
           })
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(201);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
     });
-    it("ADMIN should success", async () => {
+    it("ADMIN should success (user)", async () => {
       try {
         const res = await chai
           .request(server)
-          .post("/albums")
+          .post("/photos")
           .send({
-            label: " helscslo",
-            date: "bcjkdsbckjdsbck",
+            label: "helscslo",
+            AlbumId: albumUserId,
             UserId: userId,
           })
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(201);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
@@ -219,8 +223,8 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/albums")
-          .send({ date: "Doe" })
+          .post("/photos")
+          .send({ UserId: "Doe" })
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(422);
         res.body.should.be.a("object");
@@ -232,16 +236,16 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/albums")
+          .post("/photos")
           .send({
             label: " helscslo",
-            date: "bcjkdsbckjdsbck",
+            AlbumId: albumUserId,
             UserId: userId,
           })
           .set("Authorization", `Bearer ${userToken}`);
         res.should.have.status(201);
         res.body.should.be.a("object");
-        res.body.should.have.keys(albumkeys);
+        res.body.should.have.keys(photokeys);
       } catch (err) {
         throw err;
       }
@@ -250,10 +254,27 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .post("/albums")
+          .post("/photos")
           .send({
             label: " helscslo",
-            date: "bcjkdsbckjdsbck",
+            AlbumId: albumAdminId,
+            UserId: userId,
+          })
+          .set("Authorization", `Bearer ${userToken}`);
+        res.should.have.status(422);
+        res.body.should.be.a("object");
+      } catch (err) {
+        throw err;
+      }
+    });
+    it("USER should fail", async () => {
+      try {
+        const res = await chai
+          .request(server)
+          .post("/photos")
+          .send({
+            label: " helscslo",
+            AlbumId: albumUserId,
             UserId: adminId,
           })
           .set("Authorization", `Bearer ${userToken}`);
@@ -267,10 +288,10 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .post("albums")
+          .post("/photos")
           .send({ date: "Doe" })
           .set("Authorization", `Bearer ${userToken}`);
-        res.should.have.status(404);
+        res.should.have.status(422);
         res.body.should.be.a("object");
       } catch (err) {
         throw err;
@@ -282,9 +303,9 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumAdminId}`)
+          .put(`/photos/${photoAdminId}`)
           .set("Authorization", `Bearer ${adminToken}`)
-          .send({ label: "bonjour" });
+          .send({ url: "bonjour" });
         res.should.have.status(202);
         res.body.should.be.a("array");
       } catch (err) {
@@ -295,9 +316,9 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumUserId}`)
+          .put(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${adminToken}`)
-          .send({ label: "bonjour" });
+          .send({ url: "bonjour" });
         res.should.have.status(202);
         res.body.should.be.a("array");
       } catch (err) {
@@ -308,7 +329,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumAdminId}`)
+          .put(`/photos/${photoAdminId}`)
           .set("Authorization", `Bearer ${adminToken}`)
           .send({ hello: "bonjour" });
         res.should.have.status(422);
@@ -321,7 +342,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumUserId}`)
+          .put(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${adminToken}`)
           .send({ hello: "bonjour" });
         res.should.have.status(422);
@@ -334,24 +355,11 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumUserId}`)
+          .put(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${userToken}`)
-          .send({ label: "bonjour" });
+          .send({ url: "bonjour" });
         res.should.have.status(202);
         res.body.should.be.a("array");
-      } catch (err) {
-        throw err;
-      }
-    });
-    it("user should failed", async () => {
-      try {
-        const res = await chai
-          .request(server)
-          .put(`/albums/${albumAdminId}`)
-          .set("Authorization", `Bearer ${userToken}`)
-          .send({ label: "bonjour" });
-        res.should.have.status(422);
-        res.body.should.be.a("object");
       } catch (err) {
         throw err;
       }
@@ -360,7 +368,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .put(`/albums/${albumUserId}`)
+          .put(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${userToken}`)
           .send({ hello: "bonjour" });
         res.should.have.status(422);
@@ -375,7 +383,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .delete(`/albums/${albumUserId}`)
+          .delete(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(204);
         res.body.should.be.a("object");
@@ -387,7 +395,7 @@ describe("ALBUMS", () => {
       try {
         const res = await chai
           .request(server)
-          .delete(`/albums/${albumAdminId}`)
+          .delete(`/photos/${photoAdminId}`)
           .set("Authorization", `Bearer ${adminToken}`);
         res.should.have.status(204);
         res.body.should.be.a("object");
@@ -395,79 +403,13 @@ describe("ALBUMS", () => {
         throw err;
       }
     });
-    // Ce test failed mais la route fonctionne normalement
-
-    // it("user should success", async () => {
-    //   try {
-    //     const res = await chai
-    //       .request(server)
-    //       .delete(`/albums/${albumUserId}`)
-    //       .set("Authorization", `Bearer ${userToken}`);
-    //     res.should.have.status(204);
-    //     res.body.should.be.a("object");
-    //   } catch (err) {
-    //     throw err;
-    //   }
-    // });
-    it("user should failed", async () => {
+    it("user should success", async () => {
       try {
         const res = await chai
           .request(server)
-          .delete(`/albums/${albumAdminId}`)
-          .set("Authorization", `Bearer ${userToken}`)
-          .send({ hello: "bonjour" });
-        res.should.have.status(422);
-        res.body.should.be.a("object");
-      } catch (err) {
-        throw err;
-      }
-    });
-  });
-  describe("GET ALL PHOTOS OF ONE ALBUM", () => {
-    it("admin should success", async () => {
-      try {
-        const res = await chai
-          .request(server)
-          .get(`/albums/${albumAdminId}/photos`)
-          .set("Authorization", `Bearer ${adminToken}`);
-        res.should.have.status(200);
-        res.body.should.be.a("array");
-      } catch (err) {
-        throw err;
-      }
-    });
-    it("admin should success (user)", async () => {
-      try {
-        const res = await chai
-          .request(server)
-          .get(`/albums/${albumUserId}/photos`)
-          .set("Authorization", `Bearer ${adminToken}`);
-        res.should.have.status(200);
-        res.body.should.be.a("array");
-      } catch (err) {
-        throw err;
-      }
-    });
-    // TODO : test failed mais route fonctionne
-    // it("user should success", async () => {
-    //   try {
-    //     const res = await chai
-    //       .request(server)
-    //       .get(`/albums/${albumUserId}/photos`)
-    //       .set("Authorization", `Bearer ${userToken}`);
-    //     res.should.have.status(200);
-    //     res.body.should.be.a("object");
-    //   } catch (err) {
-    //     throw err;
-    //   }
-    // });
-    it("user should failed", async () => {
-      try {
-        const res = await chai
-          .request(server)
-          .get(`/albums/${albumAdminId}/photos`)
+          .delete(`/photos/${photoUserId}`)
           .set("Authorization", `Bearer ${userToken}`);
-        res.should.have.status(400);
+        res.should.have.status(204);
         res.body.should.be.a("object");
       } catch (err) {
         throw err;

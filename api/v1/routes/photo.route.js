@@ -5,6 +5,7 @@ const router = express.Router();
 const Photo = require("../../../models/Photo");
 const { validator, photoForPut } = require("../../../middlewares/validator");
 const checkJWT = require("../../../middlewares/checkJWT");
+const Album = require("../../../models/Album");
 
 router.get("/", checkJWT("ADMIN"), async (req, res) => {
   try {
@@ -14,20 +15,24 @@ router.get("/", checkJWT("ADMIN"), async (req, res) => {
     res.status(400).json(err);
   }
 });
-router.get("/user", checkJWT("ADMIN"), async (req, res) => {
-  try {
-    const photos = await Photo.findAll({ where: { UserId: req.user.id } });
-    res.status(200).json(photos);
-  } catch (err) {
-    res.status(400).json(err);
-  }
-});
+
+// router.get("/user", checkJWT("ADMIN"), async (req, res) => {
+//   try {
+//     const photos = await Photo.findAll({ where: { UserId: req.user.id } });
+//     res.status(200).json(photos);
+//   } catch (err) {
+//     res.status(400).json(err);
+//   }
+// });
 
 router.get("/:id", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   const { id } = req.params;
   try {
     const photoDatas = await Photo.findByPk(id);
-    if (photoDatas.UserId === req.user.id) {
+    if (
+      req.user.role === "ADMIN" ||
+      photoDatas.dataValues.UserId === req.user.id
+    ) {
       const photo = await Photo.findOne({
         where: { id },
       });
@@ -43,7 +48,7 @@ router.get("/:id", checkJWT(["ADMIN", "USER"]), async (req, res) => {
 router.post("/", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   const { url, AlbumId, UserId } = req.body;
   try {
-    if (UserId === req.user.id) {
+    if (req.user.role === "ADMIN" || UserId === req.user.id) {
       const photo = await Photo.create({ url, AlbumId, UserId });
       res.status(201).json(photo);
     } else {
@@ -62,15 +67,11 @@ router.put(
     const { id } = req.params;
     const { url, AlbumId, UserId } = req.body;
     try {
-      if (UserId === req.user.id) {
-        const photo = await Photo.update(
-          { url, AlbumId, UserId },
-          { where: { id } }
-        );
-        res.status(202).json(photo);
-      } else {
-        res.status(422).json(err);
-      }
+      const photo = await Photo.update(
+        { url, AlbumId, UserId },
+        { where: { id } }
+      );
+      res.status(202).json(photo);
     } catch (err) {
       res.status(422).json(err);
     }
@@ -80,12 +81,8 @@ router.put(
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    if (UserId === req.user.id) {
-      await Photo.destroy({ where: { id } });
-      res.status(204).end();
-    } else {
-      res.status(422).json(err);
-    }
+    await Photo.destroy({ where: { id } });
+    res.status(204).end();
   } catch (err) {
     res.status(422).json(err);
   }

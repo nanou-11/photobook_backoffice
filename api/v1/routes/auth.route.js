@@ -39,13 +39,14 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { lastName, firstName, email, password, RoleId } = req.body;
+  const { lastName, firstName, email, password, avatar, RoleId } = req.body;
   try {
     const register = await User.create({
       lastName,
       firstName,
       email,
       password,
+      avatar,
       RoleId,
     });
     res.status(201).json(register);

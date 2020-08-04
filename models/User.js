@@ -29,6 +29,10 @@ const User = sequelizeInstance.define(
       type: Sequelize.STRING(255),
       allowNull: false,
     },
+    avatar: {
+      type: Sequelize.STRING(255),
+      allowNull: true,
+    },
   },
   {
     hooks: {

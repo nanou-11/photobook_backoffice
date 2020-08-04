@@ -36,11 +36,11 @@ router.put(
   validator(userForPut, "body"),
   async (req, res) => {
     const { id } = req.params;
-    const { lastName, firstName, password, email,RoleId } = req.body;
+    const { lastName, firstName, password, email, avatar, RoleId } = req.body;
     try {
       if (req.user.role === "ADMIN" || id === req.user.id) {
         const user = await User.update(
-          { lastName, firstName, password, email, RoleId },
+          { lastName, firstName, password, email, avatar, RoleId },
           { where: { id } }
         );
         res.status(202).json(user);
@@ -55,9 +55,6 @@ router.put(
 
 router.delete("/:id", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   const { id } = req.params;
-  console.log(req.user.id)
-  console.log(id)
-  console.log(req.user.role)
   try {
     if (req.user.role === "ADMIN" || id === req.user.id) {
       await User.destroy({ where: { id } });

@@ -53,7 +53,10 @@ router.put(
     const { label, date, UserId } = req.body;
     try {
       const albumUser = await Album.findByPk(id);
-      if (req.user.role === "ADMIN" || albumUser.dataValues.UserId === req.user.id) {
+      if (
+        req.user.role === "ADMIN" ||
+        albumUser.dataValues.UserId === req.user.id
+      ) {
         const album = await Album.update(
           { label, date, UserId },
           { where: { id } }
@@ -72,8 +75,10 @@ router.delete("/:id", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   const { id } = req.params;
   try {
     const albumUser = await Album.findByPk(id);
-    console.log(albumUser.dataValues)
-    if (req.user.role === "ADMIN" || albumUser.dataValues.UserId === req.user.id) {
+    if (
+      req.user.role === "ADMIN" ||
+      albumUser.dataValues.UserId === req.user.id
+    ) {
       await Album.destroy({ where: { id } });
       res.status(204).end();
     } else {
@@ -84,11 +89,19 @@ router.delete("/:id", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   }
 });
 
-router.get("/:id/photos", async (req, res) => {
+router.get("/:id/photos", checkJWT(["ADMIN", "USER"]), async (req, res) => {
   const { id } = req.params;
   try {
-    const photos = await Photo.findAll({ where: { AlbumId: id } });
-    res.status(200).json(photos);
+    const albumUser = await Album.findByPk(id);
+    if (
+      req.user.role === "ADMIN" ||
+      albumUser.dataValues.UserId === req.user.id
+    ) {
+      const photos = await Photo.findAll({ where: { AlbumId: id } });
+      res.status(200).json(photos);
+    } else {
+      res.status(400).json(err);
+    }
   } catch (err) {
     res.status(400).json(err);
   }

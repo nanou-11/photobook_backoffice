@@ -50,6 +50,7 @@ sequelize
           firstName: "anais",
           lastName: "anais",
           RoleId: admin[0].id,
+          avatar : "https://image.flaticon.com/icons/svg/848/848043.svg"
         },
       }),
     ]);

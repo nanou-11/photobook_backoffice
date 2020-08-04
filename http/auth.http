@@ -24,5 +24,5 @@ Content-Type: application/json
     "firstName" : "jean",
     "email" : "toto@dev.com",
     "password" : "toto",
-    "RoleId" : "b1db49db-8a1e-49e5-b7a6-d4f2cfc782a6"
+    "RoleId" : "b60e8380-e945-435d-b973-4b45ef07f9ca"
 }

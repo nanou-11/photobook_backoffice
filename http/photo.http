@@ -1,20 +1,25 @@
 ### get all the users
 GET http://localhost:8000/photos HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQzMDBlMjkwLTA5OTYtNDliMy05YjBmLWRjYTAzYjU3MmU4NiIsImVtYWlsIjoiYW5haXNAZGV2LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTU5NjQ1NDYzMCwiZXhwIjoxNTk2NTQxMDMwfQ.31sAUKjYpA3iV1Yb0-xmGB_VLBQSJ4N8OqrQq9r99_0
+
 
 ### Get one user by id
 GET http://localhost:8000/photos/00f883bd-e407-4b5a-ab2f-5e7ee621fb78 HTTP/1.1
 
 ### Post one user by id
 POST http://localhost:8000/photos HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzRhZjQ0LWE1NTctNDAzYS1iMmVhLTQyNjNkMjJmMDM3ZiIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTY0NTQ5NjUsImV4cCI6MTU5NjU0MTM2NX0.EB00cGeepS7oL-j5XTmvJiykH9AFThwRmZOm-4dfsVI
 Content-Type: application/json
 
 {
     "url" : "urlphoto4",
-    "AlbumId" : "785f5f98-3485-478b-b449-a9a5c88d0622"
+    "AlbumId" : "9c5d3974-004e-47c7-80ef-29367144ed26",
+    "UserId" : "ddc4af44-a557-403a-b2ea-4263d22f037f"
 }
 
 ### Put one user by id
-PUT http://localhost:8000/photos/00f883bd-e407-4b5a-ab2f-5e7ee621fb78 HTTP/1.1
+PUT http://localhost:8000/photos/99652a45-ba08-4ef1-8927-a2e5b7675c7d HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzRhZjQ0LWE1NTctNDAzYS1iMmVhLTQyNjNkMjJmMDM3ZiIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTY0NTQ5NjUsImV4cCI6MTU5NjU0MTM2NX0.EB00cGeepS7oL-j5XTmvJiykH9AFThwRmZOm-4dfsVI
 Content-Type: application/json
 
 {
@@ -22,5 +27,6 @@ Content-Type: application/json
 }
 
 ### Delete one user by id
-DELETE http://localhost:8000/photos/00f883bd-e407-4b5a-ab2f-5e7ee621fb78 HTTP/1.1
+DELETE http://localhost:8000/photos/8328acbb-5580-4d88-9f32-076a783b7f48 HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQzMDBlMjkwLTA5OTYtNDliMy05YjBmLWRjYTAzYjU3MmU4NiIsImVtYWlsIjoiYW5haXNAZGV2LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTU5NjQ1NDYzMCwiZXhwIjoxNTk2NTQxMDMwfQ.31sAUKjYpA3iV1Yb0-xmGB_VLBQSJ4N8OqrQq9r99_0
 

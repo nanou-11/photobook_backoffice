@@ -8,13 +8,13 @@ GET http://localhost:8000/albums/1cfffbbf-746f-4e28-84a3-334ec4879d2f HTTP/1.1
 
 ### Post one user by id
 POST http://localhost:8000/albums HTTP/1.1
-Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhMTM5NGVjLWU0ZjYtNDJhNC1iMmRmLTViNDBhNTA5YTIxZiIsImVtYWlsIjoiYW5haXNAZGV2LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTU5NjIyNTA5MSwiZXhwIjoxNTk2MzExNDkxfQ.qdH8D0AxmTGsPW3CQIFmUngE7ghVsl81P3GEntUXY-c
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzRhZjQ0LWE1NTctNDAzYS1iMmVhLTQyNjNkMjJmMDM3ZiIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTY0NTQ3NjQsImV4cCI6MTU5NjU0MTE2NH0.oLeRCguN1AypaTFGNwTJWKiO65PI0P4zCtg3kvk6MAU
 Content-Type: application/json
 
 {
     "label" : "anais",
     "date" : "22/05/5256",
-    "UserId" : "344cd44f-a015-4c31-a384-8dc3482b86f4"
+    "UserId" : "ddc4af44-a557-403a-b2ea-4263d22f037f"
 }
 
 ### Put one user by id
@@ -30,4 +30,5 @@ DELETE http://localhost:8000/albums/fcc1fffb-4138-4167-bdfe-5cd9e2bfe657 HTTP/1.
 Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM0NGNkNDRmLWEwMTUtNGMzMS1hMzg0LThkYzM0ODJiODZmNCIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTYyMjU3NDgsImV4cCI6MTU5NjMxMjE0OH0.QVI1h2VFGhIkHbz4htR0OZqhmroSTv-n_3m0ZkblqJc
 
 ### Get one user by id
-GET http://localhost:8000/albums/785f5f98-3485-478b-b449-a9a5c88d0622/photos HTTP/1.1
+GET http://localhost:8000/albums/5e207107-45ac-46c1-a81e-105fc900a422/photos HTTP/1.1
+Authorization : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVmYjlmOTdiLWNjOTQtNDY3Mi04MzgxLTIxODMzODYwYjY4MSIsImVtYWlsIjoidG90b0BkZXYuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE1OTY0NTIzODgsImV4cCI6MTU5NjUzODc4OH0.R4y5zKP_dfGewNSlcjobOpmV0Etn068d5Rbh27XbTbc
